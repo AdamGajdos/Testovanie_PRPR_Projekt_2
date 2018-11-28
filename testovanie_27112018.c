@@ -48,7 +48,7 @@ void daj_na_male(char *vstup)
 	int i=0;
 	while(vstup[i])
 	{
-		putchar(tolower(vstup[i]));
+		vstup[i]=tolower(vstup[i]);
 		i++;
 	}	
 }
@@ -169,7 +169,7 @@ void funkcia_pridaj(PRVOK **zaciatok)  	 		// funkcia p
 	
 }
 
-void funkcia_hladaj(PRVOK *zaciatok)			// funkcia h
+void funkcia_hladaj(PRVOK *zaciatok)			// funkcia h	ide
 {
 	char  kluc[51];
 	char  vzor[51];
@@ -238,7 +238,7 @@ void funkcia_aktualizuj(PRVOK **zaciatok)		// funkcia a
  printf("Aktualizovalo sa %d zaznamov\n",pocet_aktualizacii);	
 }
 
-void funkcia_uvolni(PRVOK **zaciatok)			// funkcia k
+void funkcia_uvolni(PRVOK **zaciatok)			// funkcia k	ide
 {
 	PRVOK *pom;
 	while ((*zaciatok)->dalsi != NULL)
@@ -252,19 +252,21 @@ void funkcia_uvolni(PRVOK **zaciatok)			// funkcia k
 	 *zaciatok=NULL;
 }
 
-int vytvor(PRVOK **zac)
+int vytvor(PRVOK **zac)							// funkcia n	ide
 {
 	PRVOK   *akt;
 	char    slovo[51];
 	int     i,cislo1,cislo2;		 
 	FILE 	*f;
 	
-	f=fopen("auta.txt","r");	
+	int pocet;
+	pocet=pocet_zaznamov(f);
 	
+	f=fopen("auta.txt","r");	
 	
 	*zac=(PRVOK*)malloc(sizeof(PRVOK));
 	akt=*zac;
-	for (i=1;i<=4;i++)
+	for (i=1;i<=pocet;i++)
 {
 		
 	fgetc(f);								// odobratie '$'
@@ -297,12 +299,11 @@ int vytvor(PRVOK **zac)
 	akt->dalsi=NULL;							// posledny zaznam ukazuje na NULL
 		
 	fclose(f);
-	int pocet;
-	pocet=pocet_zaznamov(f);
+
 return pocet;
 }
 
-int funkcia_zmaz(PRVOK **zaciatok)				// funkcia z
+int funkcia_zmaz(PRVOK **zaciatok)				// funkcia z	ide
 {
 	int  	pocet_zmazanych=0;
 	int  	i;
@@ -318,10 +319,10 @@ int funkcia_zmaz(PRVOK **zaciatok)				// funkcia z
 	    akt=*zaciatok;
 		while(akt->dalsi!=NULL)
 		 {  
-		 	strcpy(vzor,akt->znacka);
+		 	strcpy(vzor,akt->dalsi->znacka);
 		 	daj_na_male(vzor);
 		 
-			if (strstr(vzor,kluc) == 0)	 
+			if (strstr(vzor,kluc) != NULL)	 
 		    {
 			 pom=akt->dalsi;
 		     akt->dalsi=pom->dalsi;
@@ -329,7 +330,8 @@ int funkcia_zmaz(PRVOK **zaciatok)				// funkcia z
 		     pom=NULL;
 		     pocet_zmazanych++;
 		     akt=*zaciatok;
-			 continue;				// ak zmazem nejaky zaznam, tak sa vratim na zaciatok a zacnem tak poleprechadzat od zaciatku
+		     continue;
+				// ak zmazem nejaky zaznam, tak sa vratim na zaciatok a zacnem tak poleprechadzat od zaciatku
 			}
 			
 			akt=akt->dalsi;
@@ -348,7 +350,7 @@ int funkcia_zmaz(PRVOK **zaciatok)				// funkcia z
 return pocet_zmazanych;	
 }
 
-void funkcia_vypis(PRVOK *zaciatok)
+void funkcia_vypis(PRVOK *zaciatok)				// funkcia v	ide
 {
 	PRVOK *akt;
 	int poradie=1;
@@ -368,12 +370,12 @@ int main()
 	FILE *f;
 	PRVOK *zaciatok=NULL;
 	char operacia;
-	int vytvoreny_spojak=0,pocet;
+	int vytvoreny_spojak=0,pocet,pocetzmaz=0;
 	char pom[51],znak;
 	
 	pocet=vytvor(&zaciatok);
-	printf("POCET	%d\n",pocet);
+	pocetzmaz=funkcia_zmaz(&zaciatok);
+	printf("ZMAZALO sa %d\n",pocetzmaz);
 	funkcia_vypis(zaciatok);
-	
 	return 0;
 }
