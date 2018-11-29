@@ -136,7 +136,7 @@ PRVOK *novy_zaznam_k() 							// nacitanie noveho zaznamu z klavesnice
 	return novy;
 }
 
-void funkcia_pridaj(PRVOK **zaciatok)  	 		// funkcia p
+void funkcia_pridaj(PRVOK **zaciatok)  	 		// funkcia p	
 {
 	PRVOK 	*akt,*novy;
 	int 	k,pocet,i=1;
@@ -163,8 +163,8 @@ void funkcia_pridaj(PRVOK **zaciatok)  	 		// funkcia p
 		while(akt->dalsi != NULL) 		// som na poslednom prvku
 		 akt=akt->dalsi;
 		
-		novy=novy_zaznam_k();			// nacitanie noveho zaznamu z klavesnice
-		akt->dalsi=novy; 			// pridanie noveho  zaznamu na koniec zoznamu
+		//novy=novy_zaznam_k();			// nacitanie noveho zaznamu z klavesnice
+		akt->dalsi=novy_zaznam_k(k); 			// pridanie noveho  zaznamu na koniec zoznamu
 	 } 
 	
 }
@@ -203,7 +203,7 @@ void funkcia_hladaj(PRVOK *zaciatok)			// funkcia h	ide
 	
 }
 
-void funkcia_aktualizuj(PRVOK **zaciatok)		// funkcia a
+void funkcia_aktualizuj(PRVOK **zaciatok)		// funkcia a	ide
 {
 	int pocet_aktualizacii=0;
 	char  kluc[51];
@@ -374,8 +374,7 @@ int main()
 	char pom[51],znak;
 	
 	pocet=vytvor(&zaciatok);
-	pocetzmaz=funkcia_zmaz(&zaciatok);
-	printf("ZMAZALO sa %d\n",pocetzmaz);
+	funkcia_pridaj(&zaciatok);
 	funkcia_vypis(zaciatok);
 	return 0;
 }
